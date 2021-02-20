@@ -1,0 +1,64 @@
+1-Query used for first Insight: What are the top 10 artists based on the total
+amount of sold album?
+SELECT ar.name, al.title,sum(il.unitprice) AS Total_Amount_of_Sold
+from InvoiceLine il
+join track tk
+on tk.TrackId=il.TrackId
+join Album al
+on al.AlbumId=tk.AlbumId
+join artist ar
+on ar.ArtistId=al.ArtistId
+group by ar.Name
+order by count(ar.artistid) DESC
+limit 10;
+
+
+2-Query used for first Insight: What are the total amount of albums sold per
+each country?
+SELECT ar.name AS ArtistName, al.AlbumId, al.Title AS
+AlbumTitle,ic.BillingCountry, SUM(il.quantity*il.unitprice) AS Sales,
+COUNT(tk.trackid) AS TrackNumber
+FROM Invoice ic
+JOIN InvoiceLine il
+ON ic.InvoiceId=il.InvoiceId
+JOIN Track tk
+ON tk.trackid=il.TrackId
+JOIN Album al
+ON tk.AlbumId=al.AlbumId
+JOIN Artist ar
+ON al.ArtistId=ar.ArtistId
+GROUP BY ic.BillingCountry
+ORDER BY Sales DESC;
+
+
+3-Query used for first Insight: What are the most 10 countries except USA
+bought Rock Music Style?
+SELECT ar.name AS ArtistName, al.AlbumId, al.Title AS
+AlbumTitle,ic.BillingCountry, SUM(il.quantity*il.unitprice) AS
+TotalAmountOfSales, COUNT(tk.trackid) AS TrackNumber
+FROM Invoice ic
+join InvoiceLine il
+on ic.InvoiceId=il.InvoiceId
+join track tk
+on il.TrackId=tk.TrackIdjoin Album al
+on al.AlbumId=tk.AlbumId
+join Artist ar
+on ar.ArtistId=al.ArtistId
+group by ic.BillingCountry
+order by totalamountofsales desc;
+
+
+4-Query used for first Insight: What are the total amount spent for all types of
+music per each Country?
+SELECT ic.BillingCountry AS Country, COUNT(gr.name) AS MusicStyile
+FROM Invoice ic
+JOIN InvoiceLine il
+ON ic.InvoiceId=il.InvoiceId
+JOIN Track tk
+ON tk.trackid=il.TrackId
+JOIN genre gr
+ON tk.GenreId=gr.GenreId
+GROUP BY Country
+ORDER BY MusicStyile DESC;
+
+
